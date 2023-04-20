@@ -4,13 +4,36 @@ body {
     color:#ffffff;
 }
 
-input, button {
+#title {
+    text-align:center;
+    display:block;
+    padding:10px;
+    margin:30px;
+}
+
+input {
     text-align:center;
     border-radius:25px;
     border-style:none;
     padding:10px;
     margin:30px;
     max-width:90px;
+}
+
+button {
+    text-align:center;
+    border-radius:25px;
+    border-style:none;
+    padding:20px;
+    margin:5px;
+    color:#ffffff;
+    background-color:#8e44ad;
+    transition:0.3s;
+}
+
+button:hover, button:active {
+    background-color:#843aa3;
+    transition:0.3s;
 }
 
 table {
@@ -60,4 +83,23 @@ select {
 #neural-network-constructor {
     text-align:center;
     display:block;
+}
+
+#data {
+    text-align:center;
+    display:block;
+}
+
+.data-field {
+    max-width:50px;
+    margin:5px;
+}
+
+#predict {
+    text-align:center;
+    display:block;
+}
+
+#predict-btn {
+    visibility: hidden;
 }

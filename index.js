@@ -376,6 +376,7 @@ class NeuralNetwork {
 */
 
 let myNN = null;
+//myNN = new NeuralNetwork(10000, 0.4, [{ type: "input", size: 3, activation: activationFunctions.none }, { type: "hidden", size: 6, activation: activationFunctions.sigmoid }, { type: "hidden", size: 3, activation: activationFunctions.sigmoid }]);
 
 /*
 // Inverter
@@ -417,6 +418,7 @@ document.getElementById("number-of-layers").addEventListener("change", (event) =
     }
 
     document.getElementById("predict-input").innerHTML = "";
+    document.getElementById("predict-btn").style.visibility = "hidden";
 });
 
 document.getElementById("data-num").addEventListener("change", (event) => {
@@ -427,12 +429,12 @@ document.getElementById("data-num").addEventListener("change", (event) => {
         outputString += `<tr>`;
         for (let j = 0; j < document.getElementById("size-0").value; j++) {
             inputString += `<td>`;
-            inputString += `<input type=\"number\" id=\"data-input-${i}-${j}\">`;
+            inputString += `<input class="data-field" type=\"number\" id=\"data-input-${i}-${j}\">`;
             inputString += `</td>`;
         }
         for (let j = 0; j < document.getElementById(`size-${document.getElementById("number-of-layers").value - 1}`).value; j++) {
             outputString += `<td>`;
-            outputString += `<input type=\"number\" id=\"data-output-${i}-${j}\">`;
+            outputString += `<input class="data-field" type=\"number\" id=\"data-output-${i}-${j}\">`;
             outputString += `</td>`;
         }
         inputString += `</tr>`;
@@ -442,6 +444,7 @@ document.getElementById("data-num").addEventListener("change", (event) => {
     document.getElementById("data-output").innerHTML = outputString;
 
     document.getElementById("predict-input").innerHTML = "";
+    document.getElementById("predict-btn").style.visibility = "hidden";
 });
 
 document.getElementById("train").addEventListener("click", (event) => {
@@ -467,16 +470,50 @@ document.getElementById("train").addEventListener("click", (event) => {
         }
         layers.push(myLayer);
     }
-    //myNN = new NeuralNetwork(document.getElementById("iterations").value, document.getElementById("learning-rate").value, [{ type: "input", size: 3, activation: activationFunctions.none }, { type: "hidden", size: 6, activation: activationFunctions.sigmoid }, { type: "hidden", size: 3, activation: activationFunctions.sigmoid }]);
-    myNN = new NeuralNetwork(document.getElementById("iterations").value, document.getElementById("learning-rate").value, layers);
-
     
+    let iterations = (document.getElementById("iterations").value != "")?(document.getElementById("iterations").value):(10000);
+    let alpha = (document.getElementById("learning-rate").value != "")?(document.getElementById("learning-rate").value):(0.4);
+    myNN = new NeuralNetwork(iterations, alpha, layers);
+
+    // Train the model with provided data
+    let trainingData = [];
+    for(let i = 0; i < document.getElementById("data-num").value; i++) {
+        const dat = {input: [], output: []};
+        for(let j = 0; j < document.getElementById("size-0").value; j++) {
+            dat.input.push(document.getElementById(`data-input-${i}-${j}`).value);
+        }
+        for(let j = 0; j < document.getElementById(`size-${document.getElementById("number-of-layers").value-1}`).value; j++) {
+            dat.output.push(document.getElementById(`data-output-${i}-${j}`).value);
+        }
+        trainingData.push(dat);
+    }
+
+    myNN.train(
+        trainingData
+    );
+    
+    // Create the inputs for predictions
     if(document.getElementById("size-0") != null) {
-        let predString = "<tr>";
+        let predString = "<h3>Output</h3><br><tr>";
         for(let i = 0; i < document.getElementById("size-0").value; i++) {
-            predString += `<td><input type=\"number\" id=\"pred-${i}\"></td>`;
+            predString += `<td><input class=\"data-field\" type=\"number\" id=\"pred-${i}\"></td>`;
         }
         predString += "</tr>";
         document.getElementById("predict-input").innerHTML = predString;
     }
+    document.getElementById("predict-btn").style.visibility = "visible";
+});
+
+document.getElementById("predict-btn").addEventListener('click', (event) => {
+    let predArr = [];
+    for(let i = 0; i < document.getElementById("size-0").value; i++) {
+        predArr.push(document.getElementById(`pred-${i}`).value);
+    }
+    let predOutput = myNN.predict(predArr);
+    let predString = "<tr>";
+    for(let i = 0; i < predOutput.length; i++) {
+        predString += `<td><h4 style=\"padding:20px;background-color:#8e44ad;border-radius:25px;\">${predOutput[i]}</h4></td>`;
+    }
+    predString += "</tr>";
+    document.getElementById("predict-output").innerHTML = predString;
 });
