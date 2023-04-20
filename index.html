@@ -6,8 +6,76 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Neural Network</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Stint+Ultra+Condensed&family=Stint+Ultra+Expanded&family=Ultra&display=swap" rel="stylesheet">
   </head>
   <body>
-	<script src="index.js"></script>
+    <div id="nav-bar">
+
+    </div>
+    <div id="main">
+      <div id="title">
+        <h1>Custom Neural Network</h1>
+      </div>
+      <div id="neural-network-constructor">
+        <div class="input-container">
+          <label for="iterations">Iterations</label>
+          <input type="number" id="iterations" name="iterations" placeholder="#####" min="1" max="1000000">
+        </div>
+        <div class="input-container">
+          <label for="learning-rate">Learning Rate</label>
+          <input type="number" id="learning-rate" name="learning-rate" placeholder="0-1" min="0" max="1">
+        </div>
+        <div class="input-container">
+          <label for="number-of-layers">Number of Layers</label>
+          <input type="number" id="number-of-layers" name="number-of-layers" placeholder="##" min="2" max="10">
+        </div>
+        <br>
+        <div class="input-container" id="layers-container">
+          <h2>Layers</h2>
+          <table class="table" id="layers">
+            
+          </table>
+        </div>
+      </div>
+      <div id="data">
+        <div class="input-container">
+          <label for="data-num">Amount of Data: </label>
+          <input type="number" id="data-num" name="data-num" placeholder="##" min="1">
+        </div>
+        <br>
+        <div class="input-container">
+          <h2>Input</h2>
+          <table class="table" id="data-input">
+
+          </table>
+        </div>
+        <div class="input-container">
+          <h2>Output</h2>
+          <table class="table" id="data-output">
+
+          </table>
+        </div>
+        <div class="input-container">
+          <button id="train">Train</button>
+        </div>
+      </div>
+      <div id="predict">
+        <h2>Predict</h2>
+        <table class="table" id="predict-input">
+
+        </table>
+        <br>
+        <table class="table" id="predict-output">
+
+        </table>
+        <h2>Iterations</h2>
+        <table class="table" id="cost">
+
+        </table>
+      </div>
+    </div>
+	  <script src="index.js"></script>
   </body>
 </html>

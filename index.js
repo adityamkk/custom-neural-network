@@ -9,29 +9,29 @@
 * Description: object containing activation function containers, each of which contain their respective "normal" function and "derivative" function
 */
 const activationFunctions = {
-    none : {
-        fn : function(num) {
+    none: {
+        fn: function (num) {
             return num;
         },
-        derivative : function (num) {
+        derivative: function (num) {
             return 1;
         }
     },
-    relu : {
-        fn : function(num) {
+    relu: {
+        fn: function (num) {
             if (num <= 0) { return 0; }
             else { return num; }
         },
-        derivative : function(num) {
+        derivative: function (num) {
             if (num <= 0) { return 0; }
             else { return 1; }
         }
     },
-    sigmoid : {
-        fn : function(num) {
+    sigmoid: {
+        fn: function (num) {
             return (1 / (1 + Math.pow(Math.E, (-1) * num)));
         },
-        derivative : function(num) {
+        derivative: function (num) {
             return (Math.pow(Math.E, (-1) * num) / Math.pow(1 + Math.pow(Math.E, (-1) * num), 2));
         }
     }
@@ -375,8 +375,9 @@ class NeuralNetwork {
     EXECUTABLE CODE
 */
 
-const myNN = new NeuralNetwork(10000, 0.4, [{ type: "input", size: 3, activation: activationFunctions.none }, { type: "hidden", size: 6, activation: activationFunctions.sigmoid }, { type: "hidden", size: 3, activation: activationFunctions.sigmoid }]);
+let myNN = null;
 
+/*
 // Inverter
 myNN.train([
     { input: [1, 1, 1], output: [0, 0, 0] },
@@ -391,7 +392,7 @@ myNN.train([
 
 console.log(`Predicted : [${myNN.predict([1, 0, 0])}], Actual : 0, 1, 1`);
 console.log(`Predicted : [${myNN.predict([0, 0, 1])}], Actual : 1, 1, 0`);
-
+*/
 
 /*
 // Contrast
@@ -403,3 +404,79 @@ myNN.train([
 
 console.log(`Predicted : ${myNN.predict([1, 0.4, 0])}, Actual : 1`);
 */
+
+/*
+    DOM MANIPULATION
+*/
+
+
+document.getElementById("number-of-layers").addEventListener("change", (event) => {
+    document.getElementById("layers").innerHTML = "";
+    for (let i = 0; i < event.target.value; i++) {
+        document.getElementById("layers").innerHTML += `<tr><td><label for=\"size-${i}\">Size: </label><input type=\"number\" id=\"size-${i}\" name=\"size-${i}\"></td><td><label for=\"activation-${i}\">Activation: </label><select name=\"activation-${i}\" id=\"activation-${i}\"><option value=\"none\">None</option><option value=\"relu\">Relu</option><option value=\"sigmoid\">Sigmoid</option></select></td></tr>`;
+    }
+
+    document.getElementById("predict-input").innerHTML = "";
+});
+
+document.getElementById("data-num").addEventListener("change", (event) => {
+    let inputString = "";
+    let outputString = ""
+    for (let i = 0; i < event.target.value; i++) {
+        inputString += `<tr>`;
+        outputString += `<tr>`;
+        for (let j = 0; j < document.getElementById("size-0").value; j++) {
+            inputString += `<td>`;
+            inputString += `<input type=\"number\" id=\"data-input-${i}-${j}\">`;
+            inputString += `</td>`;
+        }
+        for (let j = 0; j < document.getElementById(`size-${document.getElementById("number-of-layers").value - 1}`).value; j++) {
+            outputString += `<td>`;
+            outputString += `<input type=\"number\" id=\"data-output-${i}-${j}\">`;
+            outputString += `</td>`;
+        }
+        inputString += `</tr>`;
+        outputString += `</tr>`;
+    }
+    document.getElementById("data-input").innerHTML = inputString;
+    document.getElementById("data-output").innerHTML = outputString;
+
+    document.getElementById("predict-input").innerHTML = "";
+});
+
+document.getElementById("train").addEventListener("click", (event) => {
+    let layers = [];
+    for(let i = 0; i < document.getElementById("number-of-layers").value; i++) {
+        const myLayer = {type: "", size: 1, activation: activationFunctions.none};
+        if(i === 0) {
+            myLayer.type = "input";
+        } else if(i == document.getElementById("number-of-layers").value-1) {
+            myLayer.type = "output";
+        } else {
+            myLayer.type = "hidden";
+        }
+        myLayer.size = document.getElementById(`size-${i}`).value;
+        if(document.getElementById(`activation-${i}`).value === "none") {
+            myLayer.activation = activationFunctions.none;
+        } else if(document.getElementById(`activation-${i}`).value === "relu") {
+            myLayer.activation = activationFunctions.relu;
+        } else if(document.getElementById(`activation-${i}`).value === "sigmoid") {
+            myLayer.activation = activationFunctions.sigmoid;
+        } else {
+            myLayer.activation = activationFunctions.sigmoid;
+        }
+        layers.push(myLayer);
+    }
+    //myNN = new NeuralNetwork(document.getElementById("iterations").value, document.getElementById("learning-rate").value, [{ type: "input", size: 3, activation: activationFunctions.none }, { type: "hidden", size: 6, activation: activationFunctions.sigmoid }, { type: "hidden", size: 3, activation: activationFunctions.sigmoid }]);
+    myNN = new NeuralNetwork(document.getElementById("iterations").value, document.getElementById("learning-rate").value, layers);
+
+    
+    if(document.getElementById("size-0") != null) {
+        let predString = "<tr>";
+        for(let i = 0; i < document.getElementById("size-0").value; i++) {
+            predString += `<td><input type=\"number\" id=\"pred-${i}\"></td>`;
+        }
+        predString += "</tr>";
+        document.getElementById("predict-input").innerHTML = predString;
+    }
+});

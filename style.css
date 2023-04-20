@@ -1,3 +1,63 @@
 body {
     background-color:#2c3e50;
+    font-family: 'Montserrat', sans-serif;
+    color:#ffffff;
+}
+
+input, button {
+    text-align:center;
+    border-radius:25px;
+    border-style:none;
+    padding:10px;
+    margin:30px;
+    max-width:90px;
+}
+
+table {
+    text-align:center;
+    display:block;
+}
+
+th {
+    display:inline-block;
+    text-align:center;
+    margin:5px;
+}
+
+tr {
+    text-align:center;
+    display:block;
+    margin:5px;
+}
+
+select {
+    border-radius:25px;
+    border-style:none;
+    padding:10px;
+    margin:30px;
+    text-align:center;
+}
+
+.input-container {
+    border-radius:25px;
+    padding:15px;
+    margin:10px;
+    text-align:center;
+    background-color:#16a085;
+    display:inline-block;
+}
+
+#layers-container {
+    text-align:center;
+    display:inline-block;
+}
+
+#layers {
+    display:block;
+    text-align:center;
+}
+
+#neural-network-constructor {
+    text-align:center;
+    display:block;
 }
