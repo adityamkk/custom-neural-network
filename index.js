@@ -411,9 +411,9 @@ console.log(`Predicted : ${myNN.predict([1, 0.4, 0])}, Actual : 1`);
 */
 
 
-document.getElementById("number-of-layers").addEventListener("change", (event) => {
+document.getElementById("generate").addEventListener("click", (event) => {
     document.getElementById("layers").innerHTML = "";
-    for (let i = 0; i < event.target.value; i++) {
+    for (let i = 0; i < document.getElementById("number-of-layers").value; i++) {
         document.getElementById("layers").innerHTML += `<tr><td><label for=\"size-${i}\">Size: </label><input type=\"number\" id=\"size-${i}\" name=\"size-${i}\"></td><td><label for=\"activation-${i}\">Activation: </label><select name=\"activation-${i}\" id=\"activation-${i}\"><option value=\"none\">None</option><option value=\"relu\">Relu</option><option value=\"sigmoid\">Sigmoid</option></select></td></tr>`;
     }
 
