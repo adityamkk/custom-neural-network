@@ -66,7 +66,7 @@ function generateRandomBias() {
 function costPartialDerivatives(predicted, actual) {
     let pdArr = [];
     for (let i = 0; i < predicted.length; i++) {
-        pdArr.push(-2 * (predicted[i] - actual[i]));
+        pdArr.push(-1 * (predicted[i] - actual[i]));
     }
     return pdArr;
 }
@@ -261,12 +261,14 @@ class Layer {
     * Precondition: "dataSize" is a positive integer
     * Postcondition: adjusts each weight and bias within a layer accordingly
     */
-    adjustWeights(dataSize) {
+    adjustWeightsAndBias(dataSize) {
         for (let i = 0; i < this.getNeurons().length; i++) {
             for (let j = 0; j < this.getNeurons()[i].getWeights().length; j++) {
                 this.getNeurons()[i].weights[j] += this.getNeurons()[i].weightChanges[j] / dataSize;
                 this.getNeurons()[i].weightChanges[j] = 0;
             }
+            this.getNeurons()[i].bias += this.getNeurons()[i].biasChange / dataSize;
+            this.getNeurons()[i].biasChange = 0;
         }
     }
 }
@@ -331,7 +333,7 @@ class NeuralNetwork {
             console.log(`Iteration ${iter + 1}: COST = ${iterCost}`);
             // Adjust weights after one iteration
             for (let i = 1; i < this.getLayers().length; i++) {
-                this.getLayers()[i].adjustWeights(data.length);
+                this.getLayers()[i].adjustWeightsAndBias(data.length);
             }
         }
     }
